@@ -4,13 +4,32 @@ import { SunsetAnimation } from '@/components/SunsetAnimation';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const time = "8:30 pm"
-const sunsetRating = 4
-const comfortRating = 2
-const conditions = "cloudy, cold"
+const time = '8:30pm'
+const sunsetRating = '40%'
+const comfortRating = '20%'
+const alarmStatus = 'ON'
+
+const API_URL = ''
 
 export default function HomeScreen() {
+  const [data, setData] = useState([])
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get(API_URL)
+      setData(response.data)
+    } catch (error) {
+      console.error('Error fetching data:', error)
+    }
+  }
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -27,9 +46,9 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Next Sunset Predictions</ThemedText>
         <ThemedText>Time: {time}</ThemedText>
-        <ThemedText>Sunset rating (1-5): {sunsetRating}</ThemedText>
-        <ThemedText>Outdoor comfort rating (1-5): {comfortRating}</ThemedText>
-        <ThemedText>Conditions: {conditions}</ThemedText>
+        <ThemedText>Sunset rating: {sunsetRating}</ThemedText>
+        <ThemedText>Comfort rating (1-5): {comfortRating}</ThemedText>
+        <ThemedText>Sunset Alarm {alarmStatus}</ThemedText>
       </ThemedView>
     </ParallaxScrollView>
   );
